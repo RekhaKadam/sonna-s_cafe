@@ -101,8 +101,40 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection, onCart
             </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button and cart */}
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Mobile Cart */}
+            <button 
+              onClick={onCartClick}
+              className="flex items-center space-x-2 p-2 rounded-lg border transition-all duration-300 cursor-pointer"
+              style={{
+                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                borderColor: 'rgba(212, 175, 55, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+              }}
+            >
+              <div className="relative">
+                <ShoppingCart className="h-5 w-5" style={{color: '#D4AF37'}} />
+                {getTotalItems() > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                    {getTotalItems()}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col text-xs">
+                <span className="font-body font-bold" style={{color: '#D4AF37'}}>
+                  ₹{getTotalPrice()}
+                </span>
+              </div>
+            </button>
+            
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-amber-600 transition-colors duration-200"
@@ -127,17 +159,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection, onCart
                   {item.label}
                 </button>
               ))}
-              
-              {/* Mobile Cart */}
-              <button 
-                onClick={onCartClick}
-                className="flex items-center justify-center space-x-2 bg-amber-50 mx-3 py-3 rounded-lg border border-amber-200 mt-2 hover:bg-amber-100 transition-colors w-full"
-              >
-                <ShoppingCart className="h-5 w-5 text-amber-600" />
-                <span className="text-amber-700 font-semibold">
-                  {getTotalItems()} items - ₹{getTotalPrice()}
-                </span>
-              </button>
               
               <button
                 onClick={() => setActiveSection('login')}

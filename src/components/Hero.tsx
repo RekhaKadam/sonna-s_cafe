@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Star } from 'lucide-react';
 
 interface HeroProps {
   setActiveSection: (section: string) => void;
@@ -40,9 +40,25 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
           Welcome to <span className="text-gradient-gold inline-block" style={{color: '#D4AF37'}}>Sonna's</span>
         </h1>
         
-        <p className="font-body text-lg md:text-xl lg:text-2xl mb-10 animate-fade-in-delay leading-relaxed" style={{color: '#F5F5DC'}}>
+        <p className="font-body text-lg md:text-xl lg:text-2xl mb-6 animate-fade-in-delay leading-relaxed" style={{color: '#F5F5DC'}}>
           Where every cup tells a story and every moment becomes a memory
         </p>
+        
+        {/* Ratings */}
+        <div className="flex justify-center items-center mb-8 animate-fade-in-delay">
+          <div className="flex items-center space-x-2 px-4 py-2">
+            <div className="flex items-center space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-4 w-4 ${i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+                />
+              ))}
+            </div>
+            <span className="text-white font-semibold text-sm">4.5</span>
+            <span className="text-white/80 text-sm">• 500+ Reviews</span>
+          </div>
+        </div>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-delay-2">
           <button
