@@ -65,7 +65,7 @@ function App() {
             <Hero setActiveSection={setActiveSection} />
           </div>
           <About />
-          <Menu />
+          <Menu onCartToggle={() => setIsCartOpen(true)} />
           <Contact />
         </main>
 

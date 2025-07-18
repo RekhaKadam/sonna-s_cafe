@@ -15,7 +15,11 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-const Menu: React.FC = () => {
+interface MenuProps {
+  onCartToggle: () => void;
+}
+
+const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [addedToCartMessage, setAddedToCartMessage] = useState<string | null>(null);
   const { addToCart } = useCart();
@@ -164,9 +168,12 @@ const Menu: React.FC = () => {
     
     addToCart(cartItem);
     
-    // Show success message
+    // Show success message briefly then open cart
     setAddedToCartMessage(`${item.name} added to cart!`);
-    setTimeout(() => setAddedToCartMessage(null), 3000);
+    setTimeout(() => {
+      setAddedToCartMessage(null);
+      onCartToggle(); // Open cart modal
+    }, 1000); // Show message for 1 second then open cart
   };
 
   return (
@@ -181,7 +188,7 @@ const Menu: React.FC = () => {
       }}
     >
       {/* Background overlay for better readability */}
-      <div className="absolute inset-0 bg-white/20"></div>
+      <div className="absolute inset-0 bg-white/5"></div>
       
       {/* Success Message */}
       {addedToCartMessage && (
@@ -193,13 +200,13 @@ const Menu: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-red-800 text-lg font-medium mb-2" style={{ fontFamily: 'cursive' }}>
+          <p className="text-red-200 text-lg font-medium mb-2" style={{ fontFamily: 'cursive' }}>
             Delicious Recipes
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-amber-500 mb-4">
             Our Menu
           </h2>
-          <p className="text-gray-800 max-w-2xl mx-auto">
+          <p className="text-gray-100 max-w-2xl mx-auto">
             Explore our carefully crafted dishes made with love and the finest ingredients
           </p>
         </div>
@@ -223,12 +230,12 @@ const Menu: React.FC = () => {
 
               {/* Category Items */}
               {expandedCategory === category.name && (
-                <div className="p-8 bg-white">
+                <div className="p-8 bg-white/10 backdrop-blur-sm">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {category.items.map((item, index) => (
                       <div
                         key={index}
-                        className="bg-gray-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:bg-white border border-gray-100 hover:border-amber-200 transform hover:-translate-y-1"
+                        className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:bg-white/20 border border-white/20 hover:border-amber-200 transform hover:-translate-y-1"
                       >
                         {/* Item Image */}
                         <div className="mb-4">
@@ -285,7 +292,7 @@ const Menu: React.FC = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-100 mb-4">
             Can't find what you're looking for? We also offer custom dishes!
           </p>
           <button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, Star } from 'lucide-react';
 
 interface HeroProps {
   setActiveSection: (section: string) => void;
@@ -26,12 +26,38 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
     >
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+        {/* Pure Veg Badge */}
+        <div className="flex justify-center mb-6 animate-fade-in">
+          <div className="bg-green-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-lg">
+            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+              <div className="w-3 h-3 bg-green-600 rounded-full border border-green-700"></div>
+            </div>
+            <span className="font-semibold text-sm">100% PURE VEG</span>
+          </div>
+        </div>
+
         <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
           Welcome to <span className="text-amber-300">Sonna's</span>
         </h1>
+        
         <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fade-in-delay">
           Where every cup tells a story and every moment becomes a memory
         </p>
+        
+        {/* Rating Section - Below Our Menu */}
+        <div className="flex justify-center items-center mb-6 animate-fade-in">
+          <div className="flex items-center space-x-2">
+            <div className="flex space-x-1">
+              {[1, 2, 3, 4].map((star) => (
+                <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
+              ))}
+              <Star className="h-5 w-5 fill-amber-400/50 text-amber-400" />
+            </div>
+            <span className="text-xl font-bold text-amber-300">4.5</span>
+            <span className="text-gray-200">|</span>
+            <span className="text-gray-200 text-sm">1,200+ Happy Customers</span>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
           <button
             onClick={scrollToMenu}

@@ -25,13 +25,25 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section 
+      id="contact" 
+      className="py-20 bg-gray-50 relative"
+      style={{
+        backgroundImage: "url('/our_story.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Background overlay for better readability */}
+      <div className="absolute inset-0 bg-white/10"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Contact <span className="text-amber-600">Us</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-amber-500 mb-4">
+            Contact <span className="text-amber-500">Us</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-100 max-w-3xl mx-auto">
             We'd love to hear from you! Whether you have questions, feedback, or just want to say hello, 
             don't hesitate to reach out.
           </p>

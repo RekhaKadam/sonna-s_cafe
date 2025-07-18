@@ -18,7 +18,7 @@ const About: React.FC = () => {
         <div className="text-center">
           {/* Header */}
           <div className="mb-12">
-            <h2 className="text-4xl md:text-6xl font-bold text-blue-600 mb-8 tracking-wider">
+            <h2 className="text-4xl md:text-6xl font-bold text-amber-600 mb-8 tracking-wider">
               O U R &nbsp; S T O R Y
             </h2>
           </div>
