@@ -33,24 +33,33 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection, onCart
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-lg z-50 transition-all duration-300">
+    <nav className="fixed top-0 left-0 right-0 backdrop-blur-md shadow-lg z-50 transition-all duration-300" style={{backgroundColor: 'rgba(254, 252, 243, 0.95)'}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-18">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Coffee className="h-8 w-8 text-amber-600" />
-            <span className="text-2xl font-bold text-gray-800">Sonna's</span>
+          <div className="flex items-center space-x-3">
+            <Coffee className="h-9 w-9" style={{color: '#D4AF37'}} />
+            <span className="font-display text-3xl font-bold" style={{color: '#2C2C2C'}}>Sonna's</span>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-10">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-sm font-medium transition-colors duration-200 hover:text-amber-600 ${
-                  activeSection === item.id ? 'text-amber-600' : 'text-gray-700'
+                className={`font-body text-base font-medium transition-colors duration-300 tracking-wide ${
+                  activeSection === item.id ? '' : ''
                 }`}
+                style={{
+                  color: activeSection === item.id ? '#D4AF37' : '#5D5D5D'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#D4AF37';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = activeSection === item.id ? '#D4AF37' : '#5D5D5D';
+                }}
               >
                 {item.label}
               </button>
@@ -59,14 +68,26 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection, onCart
             {/* Cart */}
             <button 
               onClick={onCartClick}
-              className="flex items-center space-x-2 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
+              className="flex items-center space-x-3 px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer"
+              style={{
+                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                borderColor: 'rgba(212, 175, 55, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.2)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+              }}
             >
-              <ShoppingCart className="h-5 w-5 text-amber-600" />
+              <ShoppingCart className="h-5 w-5" style={{color: '#D4AF37'}} />
               <div className="flex flex-col text-xs">
-                <span className="text-amber-700 font-semibold">
+                <span className="font-body font-semibold" style={{color: '#8B4513'}}>
                   {getTotalItems()} items
                 </span>
-                <span className="text-amber-600 font-bold">
+                <span className="font-body font-bold" style={{color: '#D4AF37'}}>
                   ₹{getTotalPrice()}
                 </span>
               </div>

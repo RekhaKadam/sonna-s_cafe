@@ -29,14 +29,14 @@ const Contact: React.FC = () => {
       id="contact" 
       className="py-20 bg-gray-50 relative"
       style={{
-        backgroundImage: "url('/our_story.png')",
+        backgroundImage: "url('/cooking-hands.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}
     >
       {/* Background overlay for better readability */}
-      <div className="absolute inset-0 bg-white/10"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">

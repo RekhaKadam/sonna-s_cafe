@@ -6,13 +6,13 @@ const About: React.FC = () => {
       id="about" 
       className="relative py-20 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'url(/our_story.png)',
+        backgroundImage: 'url(/cooking-hands.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}
     >
       {/* Semi-transparent overlay */}
-      <div className="absolute inset-0 bg-black/30"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">

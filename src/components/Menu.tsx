@@ -15,11 +15,7 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-interface MenuProps {
-  onCartToggle: () => void;
-}
-
-const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
+const Menu: React.FC = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [addedToCartMessage, setAddedToCartMessage] = useState<string | null>(null);
   const { addToCart } = useCart();
@@ -168,12 +164,9 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
     
     addToCart(cartItem);
     
-    // Show success message briefly then open cart
+    // Show success message
     setAddedToCartMessage(`${item.name} added to cart!`);
-    setTimeout(() => {
-      setAddedToCartMessage(null);
-      onCartToggle(); // Open cart modal
-    }, 1000); // Show message for 1 second then open cart
+    setTimeout(() => setAddedToCartMessage(null), 3000);
   };
 
   return (
@@ -181,14 +174,14 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
       id="menu" 
       className="py-20 bg-gradient-to-br from-amber-50 to-orange-50 relative"
       style={{
-        backgroundImage: "url('/our_story.png')",
+        backgroundImage: "url('/cooking-hands.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}
     >
       {/* Background overlay for better readability */}
-      <div className="absolute inset-0 bg-white/5"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
       
       {/* Success Message */}
       {addedToCartMessage && (
@@ -200,13 +193,13 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
-          <p className="text-red-200 text-lg font-medium mb-2" style={{ fontFamily: 'cursive' }}>
+          <p className="font-script text-2xl mb-4" style={{ color: '#ee7c2aff' }}>
             Delicious Recipes
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-amber-500 mb-4">
+          <h2 className="font-display text-5xl md:text-6xl font-bold mb-6" style={{ color: '#776969ff' }}>
             Our Menu
           </h2>
-          <p className="text-gray-100 max-w-2xl mx-auto">
+          <p className="font-body text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: '#dacdcdff' }}>
             Explore our carefully crafted dishes made with love and the finest ingredients
           </p>
         </div>
@@ -214,13 +207,22 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
         {/* Menu Categories */}
         <div className="space-y-8">
           {menuData.map((category) => (
-            <div key={category.name} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div key={category.name} className="card-premium rounded-2xl overflow-hidden">
               {/* Category Header */}
               <button
                 onClick={() => toggleCategory(category.name)}
-                className="w-full px-8 py-6 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold text-xl flex items-center justify-between hover:from-amber-700 hover:to-orange-700 transition-all duration-300"
+                className="w-full px-8 py-6 text-white font-display font-bold text-xl flex items-center justify-between transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #E6C866 0%, #D4AF37 100%)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)';
+                }}
               >
-                <span>{category.name}</span>
+                <span className="tracking-wide">{category.name}</span>
                 {expandedCategory === category.name ? (
                   <ChevronUp className="h-6 w-6" />
                 ) : (
@@ -235,7 +237,7 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
                     {category.items.map((item, index) => (
                       <div
                         key={index}
-                        className="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:bg-white/20 border border-white/20 hover:border-amber-200 transform hover:-translate-y-1"
+                        className="card-premium rounded-xl p-6 transform hover:-translate-y-2"
                       >
                         {/* Item Image */}
                         <div className="mb-4">
@@ -248,11 +250,11 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
 
                         {/* Item Header */}
                         <div className="mb-4">
-                          <h3 className="text-lg font-bold text-gray-800 mb-2">
+                          <h3 className="font-display text-xl font-bold mb-2" style={{color: '#2C2C2C'}}>
                             {item.name}
                           </h3>
                           {item.description && (
-                            <p className="text-sm text-gray-600 mb-3 italic">
+                            <p className="font-body text-sm mb-3 italic leading-relaxed" style={{color: '#5D5D5D'}}>
                               {item.description}
                             </p>
                           )}
@@ -270,12 +272,12 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
 
                         {/* Price and Order */}
                         <div className="flex items-center justify-between">
-                          <span className="text-2xl font-bold text-amber-600">
+                          <span className="font-display text-2xl font-bold" style={{color: '#D4AF37'}}>
                             {item.price > 0 ? `₹${item.price}` : 'Custom'}
                           </span>
                           <button
                             onClick={() => handleOrder(item)}
-                            className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-200 flex items-center space-x-2 text-sm"
+                            className="btn-premium px-4 py-2 rounded-lg font-body font-semibold flex items-center space-x-2 text-sm"
                           >
                             <ShoppingCart className="h-4 w-4" />
                             <span>Order Now</span>
@@ -291,11 +293,11 @@ const Menu: React.FC<MenuProps> = ({ onCartToggle }) => {
         </div>
 
         {/* Call to Action */}
-        <div className="text-center mt-12">
-          <p className="text-gray-100 mb-4">
+        <div className="text-center mt-16">
+          <p className="font-body text-xl mb-6" style={{color: '#d2bbbbff'}}>
             Can't find what you're looking for? We also offer custom dishes!
           </p>
-          <button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <button className="btn-premium px-10 py-4 rounded-xl font-display text-lg font-semibold tracking-wide">
             Contact Us for Custom Orders
           </button>
         </div>

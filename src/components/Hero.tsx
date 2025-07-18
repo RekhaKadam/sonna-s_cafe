@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, Star } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 interface HeroProps {
   setActiveSection: (section: string) => void;
@@ -18,7 +18,7 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
     <section 
       className="relative h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/pan.png)',
+        backgroundImage: 'linear-gradient(rgba(44, 44, 44, 0.5), rgba(44, 44, 44, 0.3)), url(/pan.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -27,41 +27,27 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         {/* Pure Veg Badge */}
-        <div className="flex justify-center mb-6 animate-fade-in">
-          <div className="bg-green-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 shadow-lg">
-            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-              <div className="w-3 h-3 bg-green-600 rounded-full border border-green-700"></div>
+        <div className="flex justify-center mb-8 animate-fade-in">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-full flex items-center space-x-3 shadow-lg border border-green-500/20 backdrop-blur-sm">
+            <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-green-600 rounded-full border-2 border-green-700"></div>
             </div>
-            <span className="font-semibold text-sm">100% PURE VEG</span>
+            <span className="font-display font-semibold text-sm tracking-wider">100% PURE VEG</span>
           </div>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-          Welcome to <span className="text-amber-300">Sonna's</span>
+        <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-8 animate-fade-in leading-tight">
+          Welcome to <span className="text-gradient-gold inline-block" style={{color: '#D4AF37'}}>Sonna's</span>
         </h1>
         
-        <p className="text-xl md:text-2xl mb-8 text-gray-100 animate-fade-in-delay">
+        <p className="font-body text-lg md:text-xl lg:text-2xl mb-10 animate-fade-in-delay leading-relaxed" style={{color: '#F5F5DC'}}>
           Where every cup tells a story and every moment becomes a memory
         </p>
         
-        {/* Rating Section - Below Our Menu */}
-        <div className="flex justify-center items-center mb-6 animate-fade-in">
-          <div className="flex items-center space-x-2">
-            <div className="flex space-x-1">
-              {[1, 2, 3, 4].map((star) => (
-                <Star key={star} className="h-5 w-5 fill-amber-400 text-amber-400" />
-              ))}
-              <Star className="h-5 w-5 fill-amber-400/50 text-amber-400" />
-            </div>
-            <span className="text-xl font-bold text-amber-300">4.5</span>
-            <span className="text-gray-200">|</span>
-            <span className="text-gray-200 text-sm">1,200+ Happy Customers</span>
-          </div>
-        </div>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-delay-2">
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-delay-2">
           <button
             onClick={scrollToMenu}
-            className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl"
+            className="btn-premium px-10 py-4 rounded-xl text-lg font-display font-semibold tracking-wide"
           >
             Explore Our Menu
           </button>
@@ -73,7 +59,19 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
                 element.scrollIntoView({ behavior: 'smooth' });
               }
             }}
-            className="border-2 border-amber-300 text-amber-300 hover:bg-amber-300 hover:text-gray-800 px-8 py-3 rounded-lg text-lg font-semibold transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
+            className="border-2 px-10 py-4 rounded-xl text-lg font-display font-semibold tracking-wide transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
+            style={{
+              borderColor: '#D4AF37',
+              color: '#D4AF37'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#D4AF37';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#D4AF37';
+            }}
           >
             Our Story
           </button>
@@ -82,7 +80,7 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ArrowDown className="h-6 w-6 text-amber-300 opacity-70" />
+        <ArrowDown className="h-6 w-6 opacity-70" style={{color: '#D4AF37'}} />
       </div>
     </section>
   );
