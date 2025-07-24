@@ -81,119 +81,7 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
     };
   }, [setActiveSection]);
 
-  // Get all categories including "Special" and "All"
-  const getAllCategories = () => {
-    return ['Special', ...menuData.map(cat => cat.name)];
-  };
-
-  // Get icon for category
-  const getCategoryIcon = (category: string) => {
-    const iconProps = { className: "h-4 w-4" };
-    switch (category) {
-      case 'Special': return <Sparkles {...iconProps} />;
-      case 'All': return <Grid3X3 {...iconProps} />;
-      case 'Appetizers': return <Utensils {...iconProps} />;
-      case 'Paneer Specialties': return <ChefHat {...iconProps} />;
-      case 'Soups': return <Soup {...iconProps} />;
-      case 'Pasta': return <Utensils {...iconProps} />;
-      case 'Pizza': return <Pizza {...iconProps} />;
-      case 'Burgers': return <Beef {...iconProps} />;
-      case 'Sandwiches & Rolls': return <Sandwich {...iconProps} />;
-      case 'Indian Specials': return <ChefHat {...iconProps} />;
-      case 'Chinese & Rice': return <Utensils {...iconProps} />;
-      case 'Drinks': return <Droplets {...iconProps} />;
-      default: return <Utensils {...iconProps} />;
-    }
-  };
-
-  // Render spice level indicators
-  const renderSpiceLevel = (level: number) => {
-    const spiceLabels = ['No Spice', 'Mild', 'Medium', 'Hot'];
-    const spiceColors = ['text-[#B2B2B2]', 'text-[#BDECB6]', 'text-[#E6B4B4]', 'text-[#B87333]'];
-    
-    return (
-      <div className="flex items-center space-x-1">
-        <Flame className={`h-3 w-3 ${spiceColors[level]}`} />
-        <span className={`text-xs ${spiceColors[level]} font-medium`}>
-          {spiceLabels[level]}
-        </span>
-      </div>
-    );
-  };
-
-  // Render loyalty points
-  const renderLoyaltyPoints = (points: number) => {
-    return (
-      <div className="flex items-center space-x-1">
-        <Gift className="h-3 w-3 text-[#B87333]" />
-        <span className="text-xs text-[#B87333] font-medium">
-          {points} pts
-        </span>
-      </div>
-    );
-  };
-
-  // Function to filter items based on search query and auto-select category
-  const filterItemsBySearch = (items: (MenuItem & { category: string })[], query: string) => {
-    if (!query.trim()) return items;
-    
-    const searchTerms = query.toLowerCase().trim().split(/\s+/);
-    const filteredItems = items.filter(item => {
-      const nameMatch = searchTerms.some(term => 
-        item.name.toLowerCase().includes(term)
-      );
-      const descriptionMatch = item.description ? searchTerms.some(term => 
-        item.description?.toLowerCase().includes(term)
-      ) : false;
-      
-      return nameMatch || descriptionMatch;
-    });
-
-    // Auto-select category if search results are primarily from one category
-    if (filteredItems.length > 0 && query.trim()) {
-      const categoryCounts: { [key: string]: number } = {};
-      filteredItems.forEach(item => {
-        categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
-      });
-      
-      const dominantCategory = Object.keys(categoryCounts).reduce((a, b) => 
-        categoryCounts[a] > categoryCounts[b] ? a : b
-      );
-      
-      // If more than 60% of results are from one category, switch to it
-      if (categoryCounts[dominantCategory] / filteredItems.length > 0.6) {
-        setTimeout(() => setSelectedCategory(dominantCategory), 100);
-      }
-    }
-    
-    return filteredItems;
-  };
-
-  // Get filtered items based on selected category and search query
-  const getFilteredItems = () => {
-    let items: (MenuItem & { category: string })[] = [];
-    
-    // If there's a search query, show all items to search across categories
-    if (searchQuery.trim()) {
-      items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
-    } else if (selectedCategory === 'All') {
-      items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
-    } else if (selectedCategory === 'Special') {
-      // Show highly rated items (4.7+) from all categories
-      items = menuData.flatMap(cat => 
-        cat.items
-          .filter(item => item.rating >= 4.7)
-          .map(item => ({ ...item, category: cat.name }))
-      );
-    } else {
-      const category = menuData.find(cat => cat.name === selectedCategory);
-      items = category ? category.items.map(item => ({ ...item, category: category.name })) : [];
-    }
-    
-    // Apply search filter if query exists
-    return filterItemsBySearch(items, searchQuery);
-  };
-
+  // Define menu data first before functions that use it
   const menuData: MenuCategory[] = [
     {
       name: 'Appetizers',
@@ -369,6 +257,119 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
       ]
     }
   ];
+
+  // Get all categories including "Special" and "All"
+  const getAllCategories = () => {
+    return ['Special', ...menuData.map(cat => cat.name)];
+  };
+
+  // Get icon for category
+  const getCategoryIcon = (category: string) => {
+    const iconProps = { className: "h-4 w-4" };
+    switch (category) {
+      case 'Special': return <Sparkles {...iconProps} />;
+      case 'All': return <Grid3X3 {...iconProps} />;
+      case 'Appetizers': return <Utensils {...iconProps} />;
+      case 'Paneer Specialties': return <ChefHat {...iconProps} />;
+      case 'Soups': return <Soup {...iconProps} />;
+      case 'Pasta': return <Utensils {...iconProps} />;
+      case 'Pizza': return <Pizza {...iconProps} />;
+      case 'Burgers': return <Beef {...iconProps} />;
+      case 'Sandwiches & Rolls': return <Sandwich {...iconProps} />;
+      case 'Indian Specials': return <ChefHat {...iconProps} />;
+      case 'Chinese & Rice': return <Utensils {...iconProps} />;
+      case 'Drinks': return <Droplets {...iconProps} />;
+      default: return <Utensils {...iconProps} />;
+    }
+  };
+
+  // Render spice level indicators
+  const renderSpiceLevel = (level: number) => {
+    const spiceLabels = ['No Spice', 'Mild', 'Medium', 'Hot'];
+    const spiceColors = ['text-[#B2B2B2]', 'text-[#BDECB6]', 'text-[#E6B4B4]', 'text-[#B87333]'];
+    
+    return (
+      <div className="flex items-center space-x-1">
+        <Flame className={`h-3 w-3 ${spiceColors[level]}`} />
+        <span className={`text-xs ${spiceColors[level]} font-medium`}>
+          {spiceLabels[level]}
+        </span>
+      </div>
+    );
+  };
+
+  // Render loyalty points
+  const renderLoyaltyPoints = (points: number) => {
+    return (
+      <div className="flex items-center space-x-1">
+        <Gift className="h-3 w-3 text-[#B87333]" />
+        <span className="text-xs text-[#B87333] font-medium">
+          {points} pts
+        </span>
+      </div>
+    );
+  };
+
+  // Function to filter items based on search query and auto-select category
+  const filterItemsBySearch = (items: (MenuItem & { category: string })[], query: string) => {
+    if (!query.trim()) return items;
+    
+    const searchTerms = query.toLowerCase().trim().split(/\s+/);
+    const filteredItems = items.filter(item => {
+      const nameMatch = searchTerms.some(term => 
+        item.name.toLowerCase().includes(term)
+      );
+      const descriptionMatch = item.description ? searchTerms.some(term => 
+        item.description?.toLowerCase().includes(term)
+      ) : false;
+      
+      return nameMatch || descriptionMatch;
+    });
+
+    // Auto-select category if search results are primarily from one category
+    if (filteredItems.length > 0 && query.trim()) {
+      const categoryCounts: { [key: string]: number } = {};
+      filteredItems.forEach(item => {
+        categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+      });
+      
+      const dominantCategory = Object.keys(categoryCounts).reduce((a, b) => 
+        categoryCounts[a] > categoryCounts[b] ? a : b
+      );
+      
+      // If more than 60% of results are from one category, switch to it
+      if (categoryCounts[dominantCategory] / filteredItems.length > 0.6) {
+        setTimeout(() => setSelectedCategory(dominantCategory), 100);
+      }
+    }
+    
+    return filteredItems;
+  };
+
+  // Get filtered items based on selected category and search query
+  const getFilteredItems = () => {
+    let items: (MenuItem & { category: string })[] = [];
+    
+    // If there's a search query, show all items to search across categories
+    if (searchQuery.trim()) {
+      items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
+    } else if (selectedCategory === 'All') {
+      items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
+    } else if (selectedCategory === 'Special') {
+      // Show highly rated items (4.7+) from all categories
+      items = menuData.flatMap(cat => 
+        cat.items
+          .filter(item => item.rating >= 4.7)
+          .map(item => ({ ...item, category: cat.name }))
+      );
+    } else {
+      const category = menuData.find(cat => cat.name === selectedCategory);
+      items = category ? category.items.map(item => ({ ...item, category: category.name })) : [];
+    }
+    
+    // Apply search filter if query exists
+    return filterItemsBySearch(items, searchQuery);
+  };
 
   const selectCategory = (categoryName: string) => {
     setSelectedCategory(categoryName);
