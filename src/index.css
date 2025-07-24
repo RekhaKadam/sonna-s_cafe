@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium CSS Variables */
+:root {
+  /* Premium Color Palette */
+  --primary-gold: #D4AF37;
+  --primary-gold-light: #E6C866;
+  --primary-gold-dark: #B8941F;
+  --secondary-brown: #8B4513;
+  --secondary-brown-light: #A0522D;
+  --secondary-brown-dark: #654321;
+  --accent-cream: #F5F5DC;
+  --accent-warm-white: #FEFCF3;
+  --text-charcoal: #2C2C2C;
+  --text-warm-gray: #5D5D5D;
+  --text-light-gray: #8B8B8B;
+  
+  /* Premium Shadows */
+  --shadow-elegant: 0 10px 40px rgba(212, 175, 55, 0.15);
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-deep: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Base Font Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-charcoal);
+  background-color: var(--accent-warm-white);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Premium Typography Classes */
+.font-display {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-script {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Premium Button Styles */
+.btn-premium {
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--primary-gold-dark) 100%);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-elegant);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium:hover {
+  background: linear-gradient(135deg, var(--primary-gold-light) 0%, var(--primary-gold) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 50px rgba(212, 175, 55, 0.25);
+}
+
+/* Premium Card Styles */
+.card-premium {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-premium:hover {
+  box-shadow: var(--shadow-deep);
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.2);
+}
+
+/* Premium Text Gradients */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--primary-gold) 0%, var(--secondary-brown) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-elegant {
+  background: linear-gradient(135deg, var(--text-charcoal) 0%, var(--text-warm-gray) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-delay {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-delay-2 {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cart-jiggle {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-5deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(-3deg) scale(1.05);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fade-in-delay 1s ease-out 0.3s both;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fade-in-delay-2 1s ease-out 0.6s both;
+}
+
+.animate-cart-jiggle {
+  animation: cart-jiggle 0.6s ease-in-out;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d97706;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b45309;
+}
+
+/* Focus styles */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Custom gradient backgrounds */
+.bg-gradient-coffee {
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+}
+
+/* Hover effects */
+.hover-lift {
+  transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
