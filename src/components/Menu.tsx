@@ -133,12 +133,12 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
     );
   };
 
-  // Function to filter items based on search query
+  // Function to filter items based on search query and auto-select category
   const filterItemsBySearch = (items: (MenuItem & { category: string })[], query: string) => {
     if (!query.trim()) return items;
     
     const searchTerms = query.toLowerCase().trim().split(/\s+/);
-    return items.filter(item => {
+    const filteredItems = items.filter(item => {
       const nameMatch = searchTerms.some(term => 
         item.name.toLowerCase().includes(term)
       );
@@ -148,13 +148,35 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
       
       return nameMatch || descriptionMatch;
     });
+
+    // Auto-select category if search results are primarily from one category
+    if (filteredItems.length > 0 && query.trim()) {
+      const categoryCounts: { [key: string]: number } = {};
+      filteredItems.forEach(item => {
+        categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
+      });
+      
+      const dominantCategory = Object.keys(categoryCounts).reduce((a, b) => 
+        categoryCounts[a] > categoryCounts[b] ? a : b
+      );
+      
+      // If more than 60% of results are from one category, switch to it
+      if (categoryCounts[dominantCategory] / filteredItems.length > 0.6) {
+        setTimeout(() => setSelectedCategory(dominantCategory), 100);
+      }
+    }
+    
+    return filteredItems;
   };
 
   // Get filtered items based on selected category and search query
   const getFilteredItems = () => {
     let items: (MenuItem & { category: string })[] = [];
     
-    if (selectedCategory === 'All') {
+    // If there's a search query, show all items to search across categories
+    if (searchQuery.trim()) {
+      items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
+    } else if (selectedCategory === 'All') {
       items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
     } else if (selectedCategory === 'Special') {
       // Show highly rated items (4.7+) from all categories

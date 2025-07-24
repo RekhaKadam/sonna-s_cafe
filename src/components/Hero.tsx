@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowDown, Search } from 'lucide-react';
+import { useState } from 'react';
+import { Search } from 'lucide-react';
 
 // Updated props to include setActiveSection and search functionality
 interface HeroProps {
@@ -9,14 +9,10 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Add back the menu navigation function
-  const scrollToMenu = () => {
+  // Function to handle order now button
+  const handleOrderNow = () => {
     if (setActiveSection) {
       setActiveSection('menu');
-      const element = document.getElementById('menu');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
     }
   };
 
@@ -27,17 +23,12 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
     if (searchQuery.trim()) {
       if (setActiveSection) {
         setActiveSection('menu');
-        // Navigate to menu section
-        const menuElement = document.getElementById('menu');
-        if (menuElement) {
-          menuElement.scrollIntoView({ behavior: 'smooth' });
-          
-          // Dispatch custom event to sync the search query with App.tsx
-          const customEvent = new CustomEvent('menu-search', { 
-            detail: { searchQuery: searchQuery } 
-          });
-          window.dispatchEvent(customEvent);
-        }
+        
+        // Dispatch custom event to sync the search query with App.tsx
+        const customEvent = new CustomEvent('menu-search', { 
+          detail: { searchQuery: searchQuery } 
+        });
+        window.dispatchEvent(customEvent);
       }
     }
   };
@@ -91,10 +82,10 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
           Where every cup tells a story and every moment becomes a memory
         </p>
         
-        {/* Brighter Order Now button */}
+        {/* Order Now button */}
         <div className="flex justify-center animate-fade-in-delay-2">
           <button
-            onClick={scrollToMenu}
+            onClick={handleOrderNow}
             className="px-10 py-4 rounded-xl text-lg font-display font-bold tracking-wide transition-all duration-300 transform hover:scale-105 shadow-lg"
             style={{
               backgroundColor: '#B87333', // Metallic Gold/Copper - brighter and more eye-catching
@@ -113,11 +104,6 @@ const Hero: React.FC<HeroProps> = ({ setActiveSection }) => {
             Order Now
           </button>
         </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <ArrowDown className="h-6 w-6 opacity-70" style={{color: 'white'}} />
       </div>
     </section>
   );

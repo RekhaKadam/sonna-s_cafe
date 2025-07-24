@@ -43,34 +43,12 @@ const Orders: React.FC<OrdersProps> = ({ setActiveSection }) => {
         const parsedOrders = JSON.parse(savedOrders) as Order[];
         setOrders(parsedOrders);
       } else {
-        // Fallback to mock orders if no saved orders
-        const mockOrders: Order[] = [
-          {
-            id: 'ORD123456',
-            date: '2025-07-23',
-            items: [
-              { name: 'Fantasy Pizza', quantity: 1, price: 270 },
-              { name: 'Cold Coffee', quantity: 2, price: 120 }
-            ],
-            total: 510,
-            status: 'delivered'
-          },
-          {
-            id: 'ORD123457',
-            date: '2025-07-24',
-            items: [
-              { name: 'Paneer Tikka Masala', quantity: 1, price: 295 },
-              { name: 'Naan', quantity: 2, price: 60 }
-            ],
-            total: 415,
-            status: 'processing'
-          }
-        ];
-        setOrders(mockOrders);
+        // No saved orders - keep empty array
+        setOrders([]);
       }
     } catch (error) {
       console.error('Error loading orders:', error);
-      // Set fallback mock orders
+      // Set empty array on error
       setOrders([]);
     }
 

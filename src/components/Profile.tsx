@@ -25,6 +25,14 @@ const Profile: React.FC<ProfileProps> = ({
 }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  
+  // Login form states
+  const [loginStep, setLoginStep] = useState<'details' | 'otp'>('details');
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otp, setOtp] = useState('');
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [generatedOtp, setGeneratedOtp] = useState('');
 
   // Handle back button behavior
   useEffect(() => {
@@ -75,21 +83,141 @@ const Profile: React.FC<ProfileProps> = ({
     setActiveSection('home');
   };
 
+  // Handle sending OTP
+  const handleSendOtp = () => {
+    if (name.trim() && phoneNumber.trim()) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      setGeneratedOtp(otp);
+      setIsOtpSent(true);
+      setLoginStep('otp');
+      alert(`OTP sent to ${phoneNumber}: ${otp}`); // In real app, this would be sent via SMS
+    }
+  };
+
+  // Handle OTP verification and login
+  const handleVerifyOtp = () => {
+    if (otp === generatedOtp) {
+      const userData = { name, phone: phoneNumber };
+      setCurrentUser(userData);
+      setIsLoggedIn(true);
+      
+      // Create or update profile
+      const newProfile = {
+        name,
+        phone: phoneNumber,
+        loyaltyPoints: 0,
+        orders: 0
+      };
+      setProfile(newProfile);
+      localStorage.setItem('userProfile', JSON.stringify(newProfile));
+      
+      // Reset form
+      setName('');
+      setPhoneNumber('');
+      setOtp('');
+      setIsOtpSent(false);
+      setLoginStep('details');
+      setGeneratedOtp('');
+    } else {
+      alert('Invalid OTP. Please try again.');
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <section id="profile" className="py-24 pt-32 min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-            <User className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-            <h2 className="text-2xl font-semibold mb-2">Not Logged In</h2>
-            <p className="text-gray-500 mb-6">Please log in to view your profile</p>
-            <button 
-              onClick={() => setActiveSection('menu')}
-              className="px-6 py-3 rounded-lg font-medium text-white transition-colors"
-              style={{ backgroundColor: '#808000' }}
-            >
-              Browse Menu
-            </button>
+          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+            <div className="text-center mb-6">
+              <User className="h-16 w-16 mx-auto mb-4 text-gray-400" />
+              <h2 className="text-2xl font-semibold mb-2">Login to Your Account</h2>
+              <p className="text-gray-500">Enter your details to access your profile</p>
+            </div>
+
+            {loginStep === 'details' ? (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#808000] focus:border-transparent"
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#808000] focus:border-transparent"
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+                
+                <button
+                  onClick={handleSendOtp}
+                  disabled={!name.trim() || !phoneNumber.trim()}
+                  className="w-full py-3 rounded-lg font-medium text-white transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: name.trim() && phoneNumber.trim() ? '#808000' : '#9CA3AF' }}
+                >
+                  Send OTP
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="text-center mb-4">
+                  <Phone className="h-12 w-12 mx-auto mb-2 text-[#808000]" />
+                  <p className="text-sm text-gray-600">
+                    OTP sent to {phoneNumber}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Enter OTP
+                  </label>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#808000] focus:border-transparent text-center text-lg tracking-widest"
+                    placeholder="000000"
+                    maxLength={6}
+                    required
+                  />
+                </div>
+                
+                <button
+                  onClick={handleVerifyOtp}
+                  disabled={otp.length !== 6}
+                  className="w-full py-3 rounded-lg font-medium text-white transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  style={{ backgroundColor: otp.length === 6 ? '#808000' : '#9CA3AF' }}
+                >
+                  Verify OTP
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setLoginStep('details');
+                    setOtp('');
+                    setIsOtpSent(false);
+                  }}
+                  className="w-full py-2 text-sm text-gray-600 hover:text-gray-800"
+                >
+                  Change Phone Number
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>

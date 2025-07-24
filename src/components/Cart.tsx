@@ -47,6 +47,7 @@ const Cart: React.FC<CartProps> = ({
     address: ''
   });
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
+  const [orderSummary, setOrderSummary] = useState<{total: number; loyaltyPoints: number} | null>(null);
 
   // Effect to pre-fill form with logged-in user's data
   useEffect(() => {
@@ -67,6 +68,8 @@ const Cart: React.FC<CartProps> = ({
       setShowCheckout(false);
       setShowPayment(false);
       setShowOtpVerification(false);
+      setShowOrderSuccess(false);
+      setOrderSummary(null);
     }
   }, [isOpen, openInCheckoutMode]);
 
@@ -214,6 +217,62 @@ const Cart: React.FC<CartProps> = ({
       return;
     }
 
+    // Save order summary before clearing cart
+    setOrderSummary({
+      total: getFinalTotal(),
+      loyaltyPoints: getTotalLoyaltyPoints()
+    });
+
+    // If user is already logged in, skip OTP verification
+    if (isLoggedIn && currentUser) {
+      // Directly process the order without OTP
+      const orderDetails = {
+        id: 'ORD' + Math.floor(100000 + Math.random() * 900000),
+        date: new Date().toISOString().split('T')[0],
+        items: items.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        total: getFinalTotal(),
+        status: 'processing',
+        deliveryMethod: formData.deliveryMethod,
+        paymentMethod: formData.paymentMethod,
+        loyaltyPoints: getTotalLoyaltyPoints()
+      };
+      
+      // Store order in localStorage
+      try {
+        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const updatedOrders = [orderDetails, ...existingOrders];
+        localStorage.setItem('orders', JSON.stringify(updatedOrders));
+        
+        // Update user profile with loyalty points
+        const existingProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        localStorage.setItem('userProfile', JSON.stringify({
+          ...existingProfile,
+          name: formData.name,
+          phone: formData.phone,
+          loyaltyPoints: (existingProfile.loyaltyPoints || 0) + getTotalLoyaltyPoints(),
+          orders: updatedOrders.length
+        }));
+      } catch (err) {
+        console.error('Could not save order details:', err);
+      }
+      
+      // Complete the order
+      setTimeout(() => {
+        setShowOrderSuccess(true);
+        clearCart();
+        
+        // Reset states
+        setShowPayment(false);
+      }, 500);
+      
+      return;
+    }
+
+    // For non-logged-in users, proceed with OTP verification
     // Generate a 6-digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     setGeneratedOtp(otpCode);
@@ -221,12 +280,21 @@ const Cart: React.FC<CartProps> = ({
     // In a real app, you would send this OTP to the user's phone
     console.log(`OTP sent to ${formData.phone}: ${otpCode}`);
     
+    // Show OTP verification alert for non-logged-in users
+    alert(`OTP sent to ${formData.phone}: ${otpCode}`);
+    
     // Instead of alert, we'll show the OTP in the verification screen
     setShowOtpVerification(true);
   };
 
   const handleVerifyOtp = () => {
     if (otp === generatedOtp) {
+      // Save order summary before clearing cart
+      setOrderSummary({
+        total: getFinalTotal(),
+        loyaltyPoints: getTotalLoyaltyPoints()
+      });
+
       // Login the user
       setIsLoggedIn(true);
       setCurrentUser({
@@ -314,11 +382,11 @@ const Cart: React.FC<CartProps> = ({
             <div className="w-full bg-gray-50 p-4 rounded-lg mb-6">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm font-medium">Order Total:</span>
-                <span className="font-bold text-amber-600">₹{getFinalTotal()}</span>
+                <span className="font-bold text-amber-600">₹{orderSummary?.total || 0}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Loyalty Points Earned:</span>
-                <span className="font-bold text-amber-600">{getTotalLoyaltyPoints()} pts</span>
+                <span className="font-bold text-amber-600">{orderSummary?.loyaltyPoints || 0} pts</span>
               </div>
             </div>
             
@@ -326,6 +394,7 @@ const Cart: React.FC<CartProps> = ({
               <button
                 onClick={() => {
                   setShowOrderSuccess(false);
+                  setOrderSummary(null);
                   onClose();
                   setActiveSection('orders');
                 }}
@@ -336,6 +405,7 @@ const Cart: React.FC<CartProps> = ({
               <button
                 onClick={() => {
                   setShowOrderSuccess(false);
+                  setOrderSummary(null);
                   onClose();
                   setActiveSection('home');
                 }}
