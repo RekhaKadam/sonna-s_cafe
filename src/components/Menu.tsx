@@ -436,7 +436,7 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
             <span className="font-medium">Home</span>
           </button>
           
-          <h1 className="text-xl font-semibold text-[#36454F]">Our Menu</h1>
+          <h1 className="text-xl font-semibold text-[#36454F]">Menu</h1>
           
           <div className="w-20"></div> {/* Spacer for balance */}
         </div>
