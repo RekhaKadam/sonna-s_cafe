@@ -54,9 +54,15 @@ const AppContent = () => {
       }
     };
 
+    const handleClearSearch = () => {
+      setSearchQuery('');
+    };
+
     window.addEventListener('menu-search', handleMenuSearch);
+    window.addEventListener('clear-search', handleClearSearch);
     return () => {
       window.removeEventListener('menu-search', handleMenuSearch);
+      window.removeEventListener('clear-search', handleClearSearch);
     };
   }, []);
 

@@ -37,6 +37,13 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
     setCartItemCounts(counts);
   }, [items]);
 
+  // Reset category to 'Special' when search is cleared
+  useEffect(() => {
+    if (!searchQuery.trim() && selectedCategory !== 'Special') {
+      setSelectedCategory('Special');
+    }
+  }, [searchQuery]);
+
   const handleAddToCart = (item: MenuItem & { category: string }) => {
     const itemKey = item.name.toLowerCase().replace(/\s+/g, '-');
     
@@ -260,7 +267,7 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
 
   // Get all categories including "Special" and "All"
   const getAllCategories = () => {
-    return ['Special', ...menuData.map(cat => cat.name)];
+    return ['Special', 'All', ...menuData.map(cat => cat.name)];
   };
 
   // Get icon for category
@@ -326,29 +333,14 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
       return nameMatch || descriptionMatch;
     });
 
-    // Auto-select category if search results are primarily from one category
-    if (filteredItems.length > 0 && query.trim()) {
-      const categoryCounts: { [key: string]: number } = {};
-      filteredItems.forEach(item => {
-        categoryCounts[item.category] = (categoryCounts[item.category] || 0) + 1;
-      });
-      
-      const dominantCategory = Object.keys(categoryCounts).reduce((a, b) => 
-        categoryCounts[a] > categoryCounts[b] ? a : b
-      );
-      
-      // If more than 60% of results are from one category, switch to it
-      if (categoryCounts[dominantCategory] / filteredItems.length > 0.6) {
-        setTimeout(() => setSelectedCategory(dominantCategory), 100);
-      }
-    }
-    
     return filteredItems;
   };
 
   // Get filtered items based on selected category and search query
   const getFilteredItems = () => {
     let items: (MenuItem & { category: string })[] = [];
+    
+    console.log('getFilteredItems - selectedCategory:', selectedCategory, 'searchQuery:', searchQuery);
     
     // If there's a search query, show all items to search across categories
     if (searchQuery.trim()) {
@@ -364,15 +356,24 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
       );
     } else {
       const category = menuData.find(cat => cat.name === selectedCategory);
+      console.log('Found category:', category?.name, 'items count:', category?.items.length);
       items = category ? category.items.map(item => ({ ...item, category: category.name })) : [];
     }
     
-    // Apply search filter if query exists
-    return filterItemsBySearch(items, searchQuery);
+    const filteredItems = filterItemsBySearch(items, searchQuery);
+    console.log('Final filtered items count:', filteredItems.length);
+    
+    return filteredItems;
   };
 
   const selectCategory = (categoryName: string) => {
+    console.log('Selecting category:', categoryName);
     setSelectedCategory(categoryName);
+    
+    // Clear search when manually selecting a category
+    // Dispatch event to clear search in App component
+    const clearSearchEvent = new CustomEvent('clear-search');
+    window.dispatchEvent(clearSearchEvent);
   };
 
   const handleOrder = (item: MenuItem & { category: string }) => {
