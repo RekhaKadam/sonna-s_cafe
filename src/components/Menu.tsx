@@ -340,8 +340,6 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
   const getFilteredItems = () => {
     let items: (MenuItem & { category: string })[] = [];
     
-    console.log('getFilteredItems - selectedCategory:', selectedCategory, 'searchQuery:', searchQuery);
-    
     // If there's a search query, show all items to search across categories
     if (searchQuery.trim()) {
       items = menuData.flatMap(cat => cat.items.map(item => ({ ...item, category: cat.name })));
@@ -356,18 +354,15 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
       );
     } else {
       const category = menuData.find(cat => cat.name === selectedCategory);
-      console.log('Found category:', category?.name, 'items count:', category?.items.length);
       items = category ? category.items.map(item => ({ ...item, category: category.name })) : [];
     }
     
     const filteredItems = filterItemsBySearch(items, searchQuery);
-    console.log('Final filtered items count:', filteredItems.length);
     
     return filteredItems;
   };
 
   const selectCategory = (categoryName: string) => {
-    console.log('Selecting category:', categoryName);
     setSelectedCategory(categoryName);
     
     // Clear search when manually selecting a category
@@ -433,7 +428,7 @@ const Menu: React.FC<MenuProps> = ({ setActiveSection, searchQuery = '' }) => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span className="font-medium">Home</span>
+            <span className="font-medium"></span>
           </button>
           
           <h1 className="text-xl font-semibold text-[#36454F]">Menu</h1>

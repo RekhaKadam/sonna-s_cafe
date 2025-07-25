@@ -125,12 +125,12 @@ const Profile: React.FC<ProfileProps> = ({
 
   if (!isLoggedIn) {
     return (
-      <section id="profile" className="py-24 pt-32 min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+      <section id="profile" className="py-8 pt-16 min-h-screen bg-gray-50">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
             <div className="text-center mb-6">
               <User className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-              <h2 className="text-2xl font-semibold mb-2">Login to Your Account</h2>
+              <h2 className="text-xl font-semibold mb-2">Login to Your Account</h2>
               <p className="text-gray-500">Enter your details to access your profile</p>
             </div>
 
@@ -225,9 +225,9 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   return (
-    <section id="profile" className="py-24 pt-32 min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 md:px-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-12" style={{ color: '#808000' }}>
+    <section id="profile" className="py-8 pt-16 min-h-screen bg-gray-50">
+      <div className="container mx-auto px-2 sm:px-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-8" style={{ color: '#808000' }}>
           Your Profile
         </h1>
         

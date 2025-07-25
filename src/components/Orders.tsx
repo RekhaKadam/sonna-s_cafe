@@ -73,9 +73,9 @@ const Orders: React.FC<OrdersProps> = ({ setActiveSection }) => {
   };
 
   return (
-    <section id="orders" className="py-24 pt-32 min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 md:px-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-12" style={{ color: '#808000' }}>
+    <section id="orders" className="py-8 pt-16 min-h-screen bg-gray-50">
+      <div className="container mx-auto px-2 sm:px-4">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-6" style={{ color: '#808000' }}>
           Your Orders
         </h1>
         

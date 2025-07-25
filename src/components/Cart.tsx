@@ -428,8 +428,8 @@ const Cart: React.FC<CartProps> = ({
       />
       
       <div 
-        className={`absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`absolute inset-x-4 top-4 bottom-4 sm:inset-x-8 sm:top-8 sm:bottom-8 md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg md:h-[90vh] bg-white shadow-2xl rounded-lg transition-all duration-300 ${
+          isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         } flex flex-col`}
       >
         {/* Header */}
